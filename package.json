@@ -10,16 +10,16 @@
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "astro": "^5.13.2",
-    "wrangler": "^4.30.0"
+    "astro": "^5.13.11",
+    "wrangler": "^4.40.0"
   },
   "peerDependencies": {
     "typescript": "^5.9.2"
   },
   "dependencies": {
-    "@astrojs/solid-js": "^5.1.0",
-    "@tailwindcss/vite": "^4.1.12",
+    "@astrojs/solid-js": "^5.1.1",
+    "@tailwindcss/vite": "^4.1.13",
     "solid-js": "^1.9.9",
-    "tailwindcss": "^4.1.12"
+    "tailwindcss": "^4.1.13"
   }
 }
