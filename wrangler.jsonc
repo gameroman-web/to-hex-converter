@@ -3,7 +3,6 @@
 
   "name": "to-hex-converter",
   "compatibility_date": "2025-09-24",
-  "account_id": "9cb2e2e27c4416de8fa3465ed0ee8deb",
 
   "assets": {
     "directory": "./dist",
