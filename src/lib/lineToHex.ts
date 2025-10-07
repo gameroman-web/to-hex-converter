@@ -1,11 +1,10 @@
+import { strToHex } from "./strToHex";
+
 export function lineToHex(line: string): string {
   const [xStr, yStr] = line.trim().split(/\s+/) as [string, string];
 
-  const x = parseInt(xStr.replace(/\.000000$/, ""));
-  const hexX = (x & 0xffff).toString(16);
-
-  const y = parseInt(yStr.replace(/\.000000$/, ""));
-  const hexY = (y & 0xffff).toString(16);
+  const hexX = strToHex(xStr);
+  const hexY = strToHex(yStr);
 
   return `${hexX} ${hexY}`;
 }

@@ -4,11 +4,12 @@ import "~/styles/global.css";
 interface Props {
   title: string;
   description: string;
-  canonical: string;
   children: any;
 }
 
-const { title, description, canonical } = Astro.props;
+const canonical = undefined;
+
+const { title, description } = Astro.props;
 ---
 
 <html lang="en">

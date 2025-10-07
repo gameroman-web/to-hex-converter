@@ -2,8 +2,11 @@
 import Layout from "~/layouts/Layout.astro";
 
 import App from "~/components/App";
+
+const title = "To hex converter";
+const description = "To hex converter";
 ---
 
-<Layout>
+<Layout {title} {description}>
   <App client:load />
 </Layout>

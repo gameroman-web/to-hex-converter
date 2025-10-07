@@ -14,4 +14,17 @@ describe("fileToHex", () => {
 
     expect(converted_file).toBe("13 4\n70 ffe4\n68 18\n");
   });
+
+  it("Test 2", () => {
+    const converted_file = fileToHex(
+      `
+      1122.72        -1993.6        
+      -1186.5        1832.29        
+      -550.59        -805.904       
+      525.317        9.41666        
+      `
+    );
+
+    expect(converted_file).toBe("463 f836\nfb5e 728\nfdd9 fcda\n20d 9\n");
+  });
 });
