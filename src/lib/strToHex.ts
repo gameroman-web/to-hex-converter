@@ -1,5 +1,8 @@
-export function strToHex(str: string): string {
-  const num = Math.round(parseFloat(str));
-  const hex = (num & 0xffff).toString(16);
+import { strToNum } from "./strToNum";
+import { numToHex } from "./numToHex";
+
+export function strToHex(str: string, bits: number = 16): string {
+  const num = strToNum(str);
+  const hex = numToHex(num, bits);
   return hex;
 }

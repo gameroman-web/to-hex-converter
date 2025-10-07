@@ -3,23 +3,17 @@ import { describe, it, expect } from "bun:test";
 import { lineToHex } from "~/lib/lineToHex";
 
 describe("lineToHex", () => {
-  it("Test 1", () => {
-    const converted_line = lineToHex("19.000000	4.000000");
-    expect(converted_line).toBe("13 4");
+  it("converts positive decimal line to hex", () => {
+    expect(lineToHex("19.000000	4.000000")).toBe("13 4");
   });
 
-  it("Test 2", () => {
-    const converted_line = lineToHex("112.000000	-28.000000");
-    expect(converted_line).toBe("70 ffe4");
+  it("converts mixed positive and negative decimal line to hex", () => {
+    expect(lineToHex("112.000000	-28.000000")).toBe("70 ffe4");
   });
 
-  it("Test 3", () => {
-    const converted_line = lineToHex("-1186.5        1832.29        ");
-    expect(converted_line).toBe("fb5e 728");
-  });
-
-  it("Test 4", () => {
-    const converted_line = lineToHex("1122.72        -1993.6        ");
-    expect(converted_line).toBe("463 f836");
+  it("handles lines with fractional numbers and varying whitespace", () => {
+    expect(lineToHex("-1186.5        1832.29        ")).toBe("fb5e 728");
+    expect(lineToHex("1122.72        -1993.6        ")).toBe("463 f836");
+    expect(lineToHex("-1.06288       560.854        ")).toBe("ffff 231");
   });
 });

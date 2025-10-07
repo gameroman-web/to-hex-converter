@@ -3,7 +3,7 @@ import { describe, it, expect } from "bun:test";
 import { fileToHex } from "~/lib/fileToHex";
 
 describe("fileToHex", () => {
-  it("Test 1", () => {
+  it("converts simple decimal file to hex", () => {
     const converted_file = fileToHex(
       `
       19.000000	4.000000
@@ -15,7 +15,7 @@ describe("fileToHex", () => {
     expect(converted_file).toBe("13 4\n70 ffe4\n68 18\n");
   });
 
-  it("Test 2", () => {
+  it("handles files with fractional numbers and varying whitespace", () => {
     const converted_file = fileToHex(
       `
       1122.72        -1993.6        
