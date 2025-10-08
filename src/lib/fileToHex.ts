@@ -1,14 +1,6 @@
 import { lineToHex } from "./lineToHex";
 
-export function fileToHex(data: string): string {
+export function fileToHex(data: string, bits: number = 16): string {
   const lines = data.trim().split("\n");
-  const result: string[] = [];
-
-  for (const line of lines) {
-    const converted_line = lineToHex(line);
-
-    result.push(`${converted_line}\n`);
-  }
-
-  return result.join("");
+  return lines.map((line) => `${lineToHex(line, bits)}\n`).join("");
 }
