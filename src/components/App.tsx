@@ -5,30 +5,50 @@ const App = () => {
   const [hex, setHex] = createSignal<string>("");
   const [error, setError] = createSignal<string>("");
   const [loading, setLoading] = createSignal<boolean>(false);
+  const [bits, setBits] = createSignal<number>(16);
+  const [bitsInput, setBitsInput] = createSignal<string>(bits().toString());
+  const [bitsError, setBitsError] = createSignal<string>("");
+  const bitsValid = () => bitsError() === "" && bitsInput().trim() !== "";
+  const [file, setFile] = createSignal<File | null>(null);
 
-  const handleFileChange = async (e: Event) => {
+  const handleFileChange = (e: Event) => {
+    setError("");
+    setHex("");
+    const input = e.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      setFile(input.files[0] ?? null);
+    } else {
+      setFile(null);
+    }
+  };
+
+  const handleConvert = async () => {
+    if (!file()) {
+      return;
+    }
+    if (!bitsValid()) {
+      setError(
+        "Please enter a valid bits value between 1 and 30 before converting."
+      );
+      return;
+    }
     setError("");
     setHex("");
     setLoading(true);
-    const input = e.target as HTMLInputElement;
-    if (!input.files || input.files.length === 0) {
-      setLoading(false);
-      return;
-    }
-    const file = input.files[0];
-    if (!file) {
-      setLoading(false);
-      return;
-    }
+
     try {
       const reader = new FileReader();
       reader.onload = async () => {
         try {
           const content = reader.result as string;
-          const hexString = fileToHex(content);
+          const hexString = fileToHex(content, bits());
           setHex(hexString);
         } catch (err) {
-          setError("Failed to convert file to hex.");
+          if (err instanceof Error) {
+            setError(err.message);
+          } else {
+            setError("Failed to convert file to hex.");
+          }
         } finally {
           setLoading(false);
         }
@@ -37,9 +57,13 @@ const App = () => {
         setError("Failed to read file.");
         setLoading(false);
       };
-      reader.readAsText(file);
+      reader.readAsText(file()!);
     } catch (err) {
-      setError("Failed to convert file to hex.");
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Failed to convert file to hex.");
+      }
       setLoading(false);
     }
   };
@@ -47,11 +71,56 @@ const App = () => {
   return (
     <div class="p-8 max-w-xl mx-auto">
       <h1 class="text-2xl font-bold mb-4">File to Hex Converter</h1>
+      <div class="mb-4">
+        <label for="bits" class="block text-sm font-medium text-gray-700">
+          Bits (1-30)
+        </label>
+        <input
+          type="number"
+          id="bits"
+          min="1"
+          max="30"
+          value={bitsInput()}
+          onInput={(e) => {
+            const raw = e.currentTarget.value;
+            setBitsInput(raw);
+            const num = e.currentTarget.valueAsNumber;
+            if (raw.trim() === "") {
+              setBitsError("Please enter a number between 1 and 30.");
+              return;
+            }
+            if (Number.isNaN(num) || !Number.isInteger(num)) {
+              setBitsError("Please enter a whole number.");
+              return;
+            }
+            if (num < 1 || num > 30) {
+              setBitsError("Value must be between 1 and 30.");
+              return;
+            }
+            setBits(num);
+            setBitsError("");
+          }}
+          class="mt-1 block w-full pl-3 pr-2 py-2 
+                 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+        />
+        {bitsError() && <p class="text-red-600 text-sm mt-1">{bitsError()}</p>}
+      </div>
       <input
         type="file"
         onChange={handleFileChange}
-        class="mb-4 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
+        class="mb-4 block w-full text-sm text-gray-700
+               file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700
+               hover:file:bg-blue-100 cursor-pointer"
       />
+      <button
+        onClick={handleConvert}
+        disabled={!file() || loading() || !bitsValid()}
+        class="mb-4 w-full bg-green-600 text-white px-4 py-2 rounded no-underline
+        hover:bg-green-700 transition-colors disabled:bg-gray-400
+        cursor-pointer disabled:cursor-not-allowed"
+      >
+        Convert
+      </button>
       {loading() && (
         <div class="flex items-center gap-2 text-blue-600 mt-4">
           <svg
@@ -67,12 +136,12 @@ const App = () => {
               r="10"
               stroke="currentColor"
               stroke-width="4"
-            ></circle>
+            />
             <path
               class="opacity-75"
               fill="currentColor"
               d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-            ></path>
+            />
           </svg>
           Converting...
         </div>
