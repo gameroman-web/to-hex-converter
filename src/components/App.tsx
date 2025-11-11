@@ -28,7 +28,7 @@ const App = () => {
     }
     if (!bitsValid()) {
       setError(
-        "Please enter a valid bits value between 1 and 30 before converting."
+        "Please enter a valid bits value between 1 and 32 before converting."
       );
       return;
     }
@@ -73,13 +73,13 @@ const App = () => {
       <h1 class="text-2xl font-bold mb-4">File to Hex Converter</h1>
       <div class="mb-4">
         <label for="bits" class="block text-sm font-medium text-gray-700">
-          Bits (1-30)
+          Bits (1-32)
         </label>
         <input
           type="number"
           id="bits"
           min="1"
-          max="30"
+          max="32"
           value={bitsInput()}
           onInput={(e) => {
             const raw = e.currentTarget.value;
@@ -93,8 +93,8 @@ const App = () => {
               setBitsError("Please enter a whole number.");
               return;
             }
-            if (num < 1 || num > 30) {
-              setBitsError("Value must be between 1 and 30.");
+            if (num < 1 || num > 32) {
+              setBitsError("Value must be between 1 and 32.");
               return;
             }
             setBits(num);

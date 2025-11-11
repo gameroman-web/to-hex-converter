@@ -41,10 +41,14 @@ describe("strToHex", () => {
     expect(() => strToHex("")).toThrow("Invalid number string");
   });
 
-  it("should throw for invalid bits", () => {
-    expect(() => strToHex("1", 0)).toThrow("Bits must be between 1 and 30");
+  it("should not throw for valid bits", () => {
     expect(() => strToHex("1", 2)).not.toThrow();
-    expect(() => strToHex("1", 30)).not.toThrow();
-    expect(() => strToHex("1", 33)).toThrow("Bits must be between 1 and 30");
+    expect(() => strToHex("1", 31)).not.toThrow();
+    expect(() => strToHex("1", 32)).not.toThrow();
+  });
+
+  it("should throw for invalid bits", () => {
+    expect(() => strToHex("1", 0)).toThrow("Bits must be between 1 and 32");
+    expect(() => strToHex("1", 33)).toThrow("Bits must be between 1 and 32");
   });
 });

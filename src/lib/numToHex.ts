@@ -1,18 +1,18 @@
 export function numToHex(num: number, bits: number = 16): string {
-  if (bits < 1 || bits > 30) {
-    throw new Error("Bits must be between 1 and 30");
+  if (bits < 1 || bits > 32) {
+    throw new Error("Bits must be between 1 and 32");
   }
 
-  const half = 1 << (bits - 1);
+  const half = 1n << BigInt(bits - 1);
   const min = -half;
-  const max = half - 1;
+  const max = half - 1n;
 
-  const intNum = Math.trunc(num);
+  const intNum = BigInt(Math.trunc(num));
   if (intNum < min || intNum > max) {
     throw new Error(`Value ${num} does not fit in ${bits} bits`);
   }
 
-  const mask = (1 << bits) - 1;
+  const mask = (1n << BigInt(bits)) - 1n;
   const masked = intNum & mask;
   const hex = masked.toString(16);
   return hex;
