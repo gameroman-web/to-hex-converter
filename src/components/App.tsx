@@ -1,5 +1,5 @@
-import { createSignal } from "solid-js";
-import { fileToHex } from "~/lib/fileToHex";
+import { createSignal, type JSX } from "solid-js";
+import { fileToHex } from "#lib/file-to-hex";
 
 const App = () => {
   const [hex, setHex] = createSignal<string>("");
@@ -9,12 +9,15 @@ const App = () => {
   const [bitsInput, setBitsInput] = createSignal<string>(bits().toString());
   const [bitsError, setBitsError] = createSignal<string>("");
   const bitsValid = () => bitsError() === "" && bitsInput().trim() !== "";
-  const [file, setFile] = createSignal<File | null>(null);
+  const [getFile, setFile] = createSignal<File | null>(null);
 
-  const handleFileChange = (e: Event) => {
+  const handleFileChange: JSX.ChangeEventHandlerUnion<
+    HTMLInputElement,
+    Event
+  > = (e) => {
     setError("");
     setHex("");
-    const input = e.target as HTMLInputElement;
+    const input = e.target;
     if (input.files && input.files.length > 0) {
       setFile(input.files[0] ?? null);
     } else {
@@ -23,12 +26,13 @@ const App = () => {
   };
 
   const handleConvert = async () => {
-    if (!file()) {
+    const file = getFile();
+    if (!file) {
       return;
     }
     if (!bitsValid()) {
       setError(
-        "Please enter a valid bits value between 1 and 32 before converting."
+        "Please enter a valid bits value between 1 and 32 before converting.",
       );
       return;
     }
@@ -44,7 +48,7 @@ const App = () => {
           const hexString = fileToHex(content, bits());
           setHex(hexString);
         } catch (err) {
-          if (err instanceof Error) {
+          if (Error.isError(err)) {
             setError(err.message);
           } else {
             setError("Failed to convert file to hex.");
@@ -57,9 +61,9 @@ const App = () => {
         setError("Failed to read file.");
         setLoading(false);
       };
-      reader.readAsText(file()!);
+      reader.readAsText(file);
     } catch (err) {
-      if (err instanceof Error) {
+      if (Error.isError(err)) {
         setError(err.message);
       } else {
         setError("Failed to convert file to hex.");
@@ -71,6 +75,7 @@ const App = () => {
   return (
     <div class="p-8 max-w-xl mx-auto">
       <h1 class="text-2xl font-bold mb-4">File to Hex Converter</h1>
+
       <div class="mb-4">
         <label for="bits" class="block text-sm font-medium text-gray-700">
           Bits (1-32)
@@ -105,6 +110,7 @@ const App = () => {
         />
         {bitsError() && <p class="text-red-600 text-sm mt-1">{bitsError()}</p>}
       </div>
+
       <input
         type="file"
         onChange={handleFileChange}
@@ -112,15 +118,18 @@ const App = () => {
                file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700
                hover:file:bg-blue-100 cursor-pointer"
       />
+
       <button
+        type="button"
         onClick={handleConvert}
-        disabled={!file() || loading() || !bitsValid()}
+        disabled={!getFile() || loading() || !bitsValid()}
         class="mb-4 w-full bg-green-600 text-white px-4 py-2 rounded no-underline
         hover:bg-green-700 transition-colors disabled:bg-gray-400
         cursor-pointer disabled:cursor-not-allowed"
       >
         Convert
       </button>
+
       {loading() && (
         <div class="flex items-center gap-2 text-blue-600 mt-4">
           <svg
@@ -129,6 +138,7 @@ const App = () => {
             fill="none"
             viewBox="0 0 24 24"
           >
+            <title>Loading</title>
             <circle
               class="opacity-25"
               cx="12"
@@ -146,7 +156,9 @@ const App = () => {
           Converting...
         </div>
       )}
+
       {error() && <div class="text-red-600 mt-4">{error()}</div>}
+
       {hex() && !loading() && (
         <div class="mt-4">
           <div class="font-mono whitespace-pre bg-gray-100 p-2 rounded">

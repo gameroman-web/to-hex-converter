@@ -1,12 +1,12 @@
-import { describe, it, expect } from "bun:test";
+import { describe, expect, it } from "bun:test";
 
 import {
-  numToHex,
-  strToNum,
-  strToHex,
-  lineToHex,
   fileToHex,
-} from "~/lib/fileToHex";
+  lineToHex,
+  numToHex,
+  strToHex,
+  strToNum,
+} from "#lib/file-to-hex";
 
 describe("numToHex", () => {
   it("converts positive decimal string to hex", () => {

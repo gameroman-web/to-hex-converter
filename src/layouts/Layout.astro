@@ -1,39 +1,32 @@
 ---
-import "~/styles/global.css";
+import "#styles";
 
 interface Props {
   title: string;
   description: string;
-  children: any;
+  children: unknown;
 }
-
-const canonical = undefined;
 
 const { title, description } = Astro.props;
 ---
 
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="referrer" content="no-referrer-when-downgrade" />
+    <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer-when-downgrade">
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
+    >
 
     <title>{title}</title>
-    <meta name="description" content={description} />
+    <meta name="description" content={description}>
 
-    <!-- Open Graph -->
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title}>
+    <meta property="og:description" content={description}>
 
-    <!-- Twitter -->
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-
-    <link rel="canonical" href={canonical} />
+    <meta name="twitter:title" content={title}>
+    <meta name="twitter:description" content={description}>
   </head>
 
   <body>

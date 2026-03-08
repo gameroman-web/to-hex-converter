@@ -21,7 +21,7 @@ export function numToHex(num: number, bits: number = 16): string {
 export function strToNum(str: string): number {
   const num = Math.round(parseFloat(str));
 
-  if (isNaN(num)) {
+  if (Number.isNaN(num)) {
     throw new Error("Invalid number string");
   }
 
