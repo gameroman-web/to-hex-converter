@@ -1,5 +1,6 @@
 import { createSignal, type JSX } from "solid-js";
 import { fileToHex } from "#lib/file-to-hex";
+import { getNewFileName } from "#lib/get-new-file-name";
 
 const App = () => {
   const [hex, setHex] = createSignal<string>("");
@@ -18,11 +19,8 @@ const App = () => {
     setError("");
     setHex("");
     const input = e.target;
-    if (input.files && input.files.length > 0) {
-      setFile(input.files[0] ?? null);
-    } else {
-      setFile(null);
-    }
+    const file = input.files?.[0] ?? null;
+    setFile(file);
   };
 
   const handleConvert = async () => {
@@ -167,7 +165,7 @@ const App = () => {
           </div>
           <a
             href={`data:text/plain;charset=utf-8,${encodeURIComponent(hex())}`}
-            download="output.txt"
+            download={getNewFileName(getFile())}
             class="inline-block mt-4 bg-blue-600 text-white px-4 py-2 rounded no-underline hover:bg-blue-700 transition-colors"
           >
             Download Hex File
