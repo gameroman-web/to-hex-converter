@@ -1,12 +1,12 @@
-import { describe, it, expect } from "bun:test";
+import { describe, expect, it } from "bun:test";
 
 import {
-  numToHex,
-  strToNum,
-  strToHex,
-  lineToHex,
   fileToHex,
-} from "~/lib/fileToHex";
+  lineToHex,
+  numToHex,
+  strToHex,
+  strToNum,
+} from "#lib/file-to-hex";
 
 describe("numToHex", () => {
   it("converts positive decimal string to hex", () => {
@@ -166,6 +166,12 @@ describe("lineToHex", () => {
     expect(lineToHex("1122.72        -1993.6        ")).toBe("463 f836");
     expect(lineToHex("-1.06288       560.854        ")).toBe("ffff 231");
   });
+
+  it("handles lines with more than 2 columns", () => {
+    expect(
+      lineToHex("14354 10349 -56647 32369 -19760 -14237 34284 -13103", 32),
+    ).toBe("3812 286d ffff22b9 7e71 ffffb2d0 ffffc863 85ec ffffccd1");
+  });
 });
 
 describe("fileToHex", () => {
@@ -192,5 +198,24 @@ describe("fileToHex", () => {
     );
 
     expect(converted_file).toBe("463 f836\nfb5e 728\nfdd9 fcda\n20d 9\n");
+  });
+
+  it("handles files with more than 2 columns", () => {
+    const converted_file = fileToHex(
+      `
+      14354 10349 -56647 32369 -19760 -14237 34284 -13103
+      2321 -2005 40048 17510 -977 4681 3831 -17399
+      4271 -3347 39193 2871 -31631 13749 -29051 8433
+      -7842 -14711 10828 59525 -58287 -18172 33143 -16067
+      `,
+      32,
+    );
+
+    expect(converted_file)
+      .toBe(`3812 286d ffff22b9 7e71 ffffb2d0 ffffc863 85ec ffffccd1
+911 fffff82b 9c70 4466 fffffc2f 1249 ef7 ffffbc09
+10af fffff2ed 9919 b37 ffff8471 35b5 ffff8e85 20f1
+ffffe15e ffffc689 2a4c e885 ffff1c51 ffffb904 8177 ffffc13d
+`);
   });
 });

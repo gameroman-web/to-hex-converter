@@ -21,7 +21,7 @@ export function numToHex(num: number, bits: number = 16): string {
 export function strToNum(str: string): number {
   const num = Math.round(parseFloat(str));
 
-  if (isNaN(num)) {
+  if (Number.isNaN(num)) {
     throw new Error("Invalid number string");
   }
 
@@ -35,10 +35,9 @@ export function strToHex(str: string, bits: number = 16): string {
 }
 
 export function lineToHex(line: string, bits: number = 16): string {
-  const [xStr, yStr] = line.trim().split(/\s+/) as [string, string];
-  const hexX = strToHex(xStr, bits);
-  const hexY = strToHex(yStr, bits);
-  return `${hexX} ${hexY}`;
+  const strings = line.trim().split(/\s+/);
+  const hexes = strings.map((str) => strToHex(str, bits));
+  return hexes.join(" ");
 }
 
 export function fileToHex(data: string, bits: number = 16): string {
