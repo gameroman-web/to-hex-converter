@@ -211,8 +211,9 @@ describe("fileToHex", () => {
       32,
     );
 
-    expect(converted_file)
-      .toBe(`3812 286d ffff22b9 7e71 ffffb2d0 ffffc863 85ec ffffccd1
+    expect(
+      converted_file,
+    ).toBe(`3812 286d ffff22b9 7e71 ffffb2d0 ffffc863 85ec ffffccd1
 911 fffff82b 9c70 4466 fffffc2f 1249 ef7 ffffbc09
 10af fffff2ed 9919 b37 ffff8471 35b5 ffff8e85 20f1
 ffffe15e ffffc689 2a4c e885 ffff1c51 ffffb904 8177 ffffc13d
