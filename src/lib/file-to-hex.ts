@@ -35,10 +35,9 @@ export function strToHex(str: string, bits: number = 16): string {
 }
 
 export function lineToHex(line: string, bits: number = 16): string {
-  const [xStr, yStr] = line.trim().split(/\s+/) as [string, string];
-  const hexX = strToHex(xStr, bits);
-  const hexY = strToHex(yStr, bits);
-  return `${hexX} ${hexY}`;
+  const strings = line.trim().split(/\s+/);
+  const hexes = strings.map((str) => strToHex(str, bits));
+  return hexes.join(" ");
 }
 
 export function fileToHex(data: string, bits: number = 16): string {
