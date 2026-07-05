@@ -2,7 +2,7 @@ import { createSignal, type JSX } from "solid-js";
 import { fileToHex } from "#lib/file-to-hex";
 import { getNewFileName } from "#lib/get-new-file-name";
 
-const App = () => {
+function App() {
   const [hex, setHex] = createSignal<string>("");
   const [error, setError] = createSignal<string>("");
   const [loading, setLoading] = createSignal<boolean>(false);
@@ -174,6 +174,6 @@ const App = () => {
       )}
     </div>
   );
-};
+}
 
 export default App;
