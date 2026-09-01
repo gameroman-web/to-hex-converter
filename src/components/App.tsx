@@ -115,13 +115,18 @@ function App() {
         </Show>
       </div>
 
-      <input
-        type="file"
-        onChange={handleFileChange}
-        class="mb-4 block w-full text-sm text-gray-700
-               file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700
-               hover:file:bg-blue-100 cursor-pointer"
-      />
+      <label class="block mb-4">
+        <span class="block text-sm font-medium text-gray-700">
+          Choose a file
+        </span>
+        <input
+          type="file"
+          onChange={handleFileChange}
+          class="mt-1 block w-full text-sm text-gray-700
+                 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700
+                 hover:file:bg-blue-100 cursor-pointer"
+        />
+      </label>
 
       <button
         type="button"
