@@ -1,5 +1,5 @@
 import type { JSX } from "solid-js";
-import { createSignal } from "solid-js";
+import { createSignal, Show } from "solid-js";
 import { fileToHex } from "#lib/file-to-hex";
 import { getNewFileName } from "#lib/get-new-file-name";
 
@@ -107,7 +107,12 @@ function App() {
           class="mt-1 block w-full pl-3 pr-2 py-2 
                  text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
         />
-        {bitsError() && <p class="text-red-600 text-sm mt-1">{bitsError()}</p>}
+
+        <Show when={bitsError()}>
+          {(bitsError) => (
+            <p class="text-red-600 text-sm mt-1">{bitsError()}</p>
+          )}
+        </Show>
       </div>
 
       <input
@@ -129,7 +134,7 @@ function App() {
         Convert
       </button>
 
-      {loading() && (
+      <Show when={loading()}>
         <div class="flex items-center gap-2 text-blue-600 mt-4">
           <svg
             class="animate-spin h-5 w-5 text-blue-600"
@@ -154,11 +159,13 @@ function App() {
           </svg>
           Converting...
         </div>
-      )}
+      </Show>
 
-      {error() && <div class="text-red-600 mt-4">{error()}</div>}
+      <Show when={error()}>
+        <div class="text-red-600 mt-4">{error()}</div>
+      </Show>
 
-      {hex() && !loading() && (
+      <Show when={hex() && !loading()}>
         <div class="mt-4">
           <div class="font-mono whitespace-pre bg-gray-100 p-2 rounded">
             {hex().split("\n").slice(0, 5).join("\n")}
@@ -172,7 +179,7 @@ function App() {
             Download Hex File
           </a>
         </div>
-      )}
+      </Show>
     </div>
   );
 }
